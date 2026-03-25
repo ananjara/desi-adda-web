@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu | Desi Adda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-pink-600 via-red-600 to-orange-500 text-white font-sans antialiased min-h-screen selection:bg-yellow-400 selection:text-black">
+
+    <nav class="py-6 px-6 flex justify-between items-center border-b border-white/20 bg-black/10 backdrop-blur-sm sticky top-0 z-50">
+        <div class="w-1/3 text-left">
+            <a href="/" class="text-[10px] md:text-xs tracking-[0.3em] md:tracking-[0.4em] uppercase hover:text-yellow-300 transition duration-300 font-bold drop-shadow-md">
+                ← Back<span class="hidden md:inline"> to Adda</span>
+            </a>
+        </div>
+        
+        <div class="w-1/3 flex justify-center">
+            <a href="/">
+                <img src="/static/img/logo-da.png" alt="Desi Adda Logo" class="h-28 md:h-40 drop-shadow-2xl hover:scale-105 transition-transform duration-300">
+            </a>
+        </div>
+        
+        <div class="w-1/3"></div> </nav>
+
+    <div class="max-w-5xl mx-auto py-16 px-6">
+        
+        <div class="text-center mb-20">
+            <h1 class="text-5xl md:text-8xl font-black uppercase tracking-tighter drop-shadow-xl mb-4">Menu</h1>
+            <p class="text-yellow-300 uppercase tracking-[0.4em] text-xs md:text-sm font-bold">Authentic Indian Street Flavors</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-24">
+
+            {% for category, items in menu_categories.items() %}
+            
+            <section class="{% if category == 'Sandwiches' %}md:col-span-2{% endif %} bg-black/20 p-8 rounded-3xl backdrop-blur-sm border border-white/10 shadow-2xl">
+                
+                <h2 class="text-3xl font-black uppercase tracking-tighter mb-8 border-l-4 border-yellow-400 pl-4 drop-shadow-md {% if category == 'Adda Special' %}text-yellow-300{% endif %}">
+                    {{ category }}
+                </h2>
+                
+                <div class="{% if category == 'Sandwiches' %}grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 text-sm{% else %}space-y-6 text-sm{% endif %}">
+                    
+                    {% for item in items %}
+                        
+                        {% if item.is_subheader %}
+                            <div class="mt-6 text-yellow-300/80 uppercase text-xs font-bold tracking-widest border-b border-white/20 pb-1">{{ item.name }}</div>
+                        
+                        {% elif item.is_flavor_list %}
+                            <div class="mt-4 text-white/90 italic text-xs tracking-wide leading-relaxed bg-black/30 p-3 rounded-lg border border-white/10">
+                                <span class="text-yellow-300 font-bold not-italic">FLAVORS:</span> {{ item.name.replace('Flavors: ', '') }}
+                            </div>
+
+                        {% else %}
+                            <div class="flex justify-between border-b border-white/20 pb-2 border-dashed
+                                {% if item.muted %}text-white/60{% endif %}
+                                {% if item.highlight == 'red' %}text-yellow-300 font-black text-lg tracking-wider{% endif %}
+                                {% if item.highlight == 'yellow' %}font-black text-yellow-300 bg-black/40 px-2 py-1 rounded{% endif %}">
+                                
+                                <span class="font-medium tracking-wide">{{ item.name }}</span>
+                                
+                                <span class="font-bold">{% if not item.price.startswith('$') %}${% endif %}{{ item.price }}</span>
+                            </div>
+                        {% endif %}
+
+                    {% endfor %}
+                </div>
+            </section>
+            {% endfor %}
+
+        </div>
+
+        <footer class="mt-32 pt-8 border-t border-white/20 text-[10px] text-white/70 uppercase tracking-widest text-center font-bold pb-10">
+            *Please be aware our food may contain or come in contact with common allergens such as dairy, wheat, nuts and gluten.
+        </footer>
+    </div>
+
+</body>
+</html>
